@@ -7,3 +7,4 @@ data/*
 *.npz
 *.mat
 *.txt
+models/__pycache__/*
