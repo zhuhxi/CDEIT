@@ -2,6 +2,7 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import argparse
 
 def save_comparison_images(preds, gts, ckpt_dir, num_samples=5):
     # 创建目录，如果目录不存在
@@ -38,18 +39,27 @@ def save_comparison_images(preds, gts, ckpt_dir, num_samples=5):
     print(f"📁 图像已保存到 {image_path}")
 
 def main():
-    # 设置ckpt_dir路径
-    ckpt_dir = '/home/zhx/word/work/CDEIT/checkpoints/SADB_Net'  # 替换为实际路径
+    # 使用argparse配置命令行参数
+    parser = argparse.ArgumentParser(description="Comparison image generation for model predictions")
+    parser.add_argument('--ckpt_dir', type=str, required=True, help="路径到 checkpoints 目录")
+    parser.add_argument('--num_samples', type=int, default=5, help="要生成的样本数量")
+
+    args = parser.parse_args()
 
     # 加载 test_results.mat 文件
-    test_results_path = os.path.join(ckpt_dir, 'test_results.mat')
+    test_results_path = os.path.join(args.ckpt_dir, 'test_results.mat')
+    
+    if not os.path.exists(test_results_path):
+        print(f"❌ 错误: {test_results_path} 文件不存在!")
+        return
+
     test_results = sio.loadmat(test_results_path)
 
     preds = test_results['preds']
     gts = test_results['gts']
 
     # 调用函数保存图像
-    save_comparison_images(preds, gts, ckpt_dir)
+    save_comparison_images(preds, gts, args.ckpt_dir, num_samples=args.num_samples)
 
 if __name__ == "__main__":
     main()
