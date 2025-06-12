@@ -1,4 +1,3 @@
-# models/eitnet.py
 import torch
 import torch.nn as nn
 
@@ -28,6 +27,7 @@ class EITNet(nn.Module):
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
+        x = torch.sigmoid(x)  # 在输出上应用 sigmoid 激活函数
         return x
 
 # 测试脚本

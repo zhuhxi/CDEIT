@@ -241,6 +241,9 @@ class SADB_Net(nn.Module):
 
         # MLP 融合
         out = self.projector(semantic_feat, cond_feat)  # (B, 1, 128, 128)
+
+        # Apply Sigmoid to output
+        out = torch.sigmoid(out)  # 将输出归一化到 [0, 1] 范围
         return out
 
 

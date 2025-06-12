@@ -1,0 +1,9 @@
+CDEIT/*
+checkpoints/*
+results/*
+results_zhx/*
+data/*
+*.pt
+*.npz
+*.mat
+*.txt
