@@ -42,7 +42,7 @@ def main():
     # 使用argparse配置命令行参数
     parser = argparse.ArgumentParser(description="Comparison image generation for model predictions")
     parser.add_argument('--ckpt_dir', type=str, required=True, help="路径到 checkpoints 目录")
-    parser.add_argument('--num_samples', type=int, default=5, help="要生成的样本数量")
+    parser.add_argument('--num_samples', type=int, default=10, help="要生成的样本数量")
 
     args = parser.parse_args()
 
