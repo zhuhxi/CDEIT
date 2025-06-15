@@ -1,5 +1,7 @@
 import scipy.io as sio
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # 禁用显示，使用Agg后端生成图像
 import numpy as np
 import os
 import argparse

@@ -173,9 +173,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Test model on EIT data.")
-    parser.add_argument("--model-name", type=str, default="eitnet", help="Module name in models/ [eitnet sadb_net cnneim]")
-    parser.add_argument("--model-class", type=str, default="EITNet", help="Class name of model [EITNet SADB_Net CNN_EIM]")
-    parser.add_argument("--ckpt-name", type=str, default="EITNet", help="Checkpoint subdirectory name [EITNet SADB_Net CNN_EIM]")
+    parser.add_argument("--model-name", type=str, default="eitnet", help="Module name in models/ [eitnet sadb_net cnneim ecnet]")
+    parser.add_argument("--model-class", type=str, default="EITNet", help="Class name of model [EITNet SADB_Net CNN_EIM EcNet]")
+    parser.add_argument("--ckpt-name", type=str, default="EITNet", help="Checkpoint subdirectory name [EITNet SADB_Net CNN_EIM EcNet]")
     parser.add_argument("--test-path", type=str, default="/home/zhx/word/work/CDEIT/data/test/", help="Test data path")
 
     args = parser.parse_args()

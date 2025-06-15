@@ -1,3 +1,6 @@
+python test.py --model-name ecnet --model-class EcNet --ckpt-name EcNet
+python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/EcNet --num_samples 5
+
 python test.py --model-name eitnet --model-class EITNet --ckpt-name EITNet
 python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/EITNet --num_samples 5
 

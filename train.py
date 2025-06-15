@@ -5,6 +5,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # 禁用显示，使用Agg后端生成图像
 import numpy as np
 from torch.utils.data import DataLoader
 from dataset import EITdataset
@@ -126,9 +128,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train model on EIT data.")
-    parser.add_argument("--model-name", type=str, default="eitnet", help="Module name in models/ [eitnet sadb_net cnneim]")
-    parser.add_argument("--model-class", type=str, default="EITNet", help="Class name of model [EITNet SADB_Net CNN_EIM]")
-    parser.add_argument("--ckpt-name", type=str, default="EITNet", help="Checkpoint subdirectory name [EITNet SADB_Net CNN_EIM]")
+    parser.add_argument("--model-name", type=str, default="eitnet", help="Module name in models/ [eitnet sadb_net cnneim ecnet]")
+    parser.add_argument("--model-class", type=str, default="EITNet", help="Class name of model [EITNet SADB_Net CNN_EIM EcNet]")
+    parser.add_argument("--ckpt-name", type=str, default="EITNet", help="Checkpoint subdirectory name [EITNet SADB_Net CNN_EIM EcNet]")
     parser.add_argument("--train-path", type=str, default="/home/zhx/word/work/CDEIT/data/train/", help="Training data path")
     parser.add_argument("--valid-path", type=str, default="/home/zhx/word/work/CDEIT/data/valid/", help="Validation data path")
     parser.add_argument("--epochs", type=int, default=30, help="Number of training epochs")
