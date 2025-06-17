@@ -9,3 +9,6 @@ python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/SADB_Net --num_s
 
 python test.py --model-name cnneim --model-class CNN_EIM --ckpt-name CNN_EIM 
 python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/CNN_EIM --num_samples 5
+
+python test.py --model-name srcnn --model-class SRCNN --ckpt-name SRCNN
+python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/SRCNN --num_samples 5

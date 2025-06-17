@@ -42,11 +42,39 @@ class DilatedConvBlock(nn.Module):
         x = self.conv3(x)
         return x
 
-# --- Ec-Net 主体 ---
+class MLPUpSample(nn.Module):
+    def __init__(self, input_channels, output_channels, input_size, output_size):
+        super(MLPUpSample, self).__init__()
+        self.input_size = input_size
+        self.output_size = output_size
+        
+        # 输入展平后的维度
+        self.input_dim = input_channels * input_size * input_size
+        self.output_dim = output_channels * output_size * output_size
+        
+        # 定义 MLP 模块
+        self.mlp = nn.Sequential(
+            nn.Linear(self.input_dim, self.output_dim)  # 输出层
+        )
+
+    def forward(self, x):
+        B, C, H, W = x.shape
+        # 将图像展平为一维向量
+        x = x.view(B, -1)  # 展平为 (B, C * H * W)
+        
+        # 通过 MLP 进行特征转换
+        x = self.mlp(x)  # 输出 (B, output_channels * output_size * output_size)
+        
+        # 将输出重塑为目标大小
+        x = x.view(B, -1, self.output_size, self.output_size)  # 还原为 (B, output_channels, output_size, output_size)
+        
+        return x
+
 class EcNet(nn.Module):
     def __init__(self):
         super(EcNet, self).__init__()
-        self.upsample = nn.Upsample(scale_factor=8, mode='bilinear', align_corners=False)  # 从16x16到128x128
+        # 使用 MLP 上采样
+        self.mlp_upsample = MLPUpSample(input_channels=1, output_channels=1, input_size=16, output_size=128)
         self.feature_fusion = FeatureFusion()
         self.dilated_blocks = nn.Sequential(
             DilatedConvBlock(),
@@ -57,7 +85,8 @@ class EcNet(nn.Module):
         self.residual_reconstruct = nn.Conv2d(96, 1, kernel_size=3, padding=1)
 
     def forward(self, x):
-        x = self.upsample(x)  # (B, 1, 128, 128)
+        # 使用 MLP 上采样
+        x = self.mlp_upsample(x)  # (B, 1, 128, 128)
         fused = self.feature_fusion(x)  # (B, 96, 128, 128)
         features = self.dilated_blocks(fused)  # (B, 96, 128, 128)
 
