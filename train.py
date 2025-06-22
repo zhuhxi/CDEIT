@@ -42,7 +42,7 @@ def main(args):
     ModelClass = getattr(model_module, args.model_class)
 
     # 初始化模型
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     model = ModelClass().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
@@ -51,8 +51,8 @@ def main(args):
     # 加载数据
     train_dataset = EITdataset(args.train_path, modelname='DEIT')
     valid_dataset = EITdataset(args.valid_path, modelname='DEIT')
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
-    valid_loader = DataLoader(valid_dataset, batch_size=16, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+    valid_loader = DataLoader(valid_dataset, batch_size=8, shuffle=False)
 
     # 保存目录
     ckpt_dir = os.path.join("checkpoints", args.ckpt_name)
@@ -61,17 +61,28 @@ def main(args):
     train_losses = []
     valid_losses = []
 
+    if args.model_class == 'CDEIT':
+        from diffusion import create_diffusion
+        diffusion = create_diffusion(timestep_respacing="") 
+
     for epoch in range(args.epochs):
         model.train()
         train_loss = 0.0
         loop = tqdm(train_loader, desc=f"[Train] Epoch {epoch+1}/{args.epochs}", ncols=100)
 
-        for ys, _, xs in loop:
+        for ys, y_st, xs in loop:
             xs = xs.to(device)
             ys = ys.to(device)
 
-            pred = model(ys)
-            loss = criterion(pred, xs)
+            if args.model_class == "CDEIT":
+                y_st = y_st.to(device)
+                t = torch.randint(0, diffusion.num_timesteps, (xs.shape[0],), device=device)
+                model_kwargs = dict(y=ys, y_st=y_st)
+                loss_dict = diffusion.training_losses(model, xs, t, model_kwargs)
+                loss = loss_dict["loss"]  # *args.global_batch_size
+            else:
+                pred = model(ys)
+                loss = criterion(pred, xs)
 
             optimizer.zero_grad()
             loss.backward()
@@ -87,12 +98,19 @@ def main(args):
         model.eval()
         valid_loss = 0.0
         with torch.no_grad():
-            for ys, _, xs in valid_loader:
+            for ys, y_st, xs in valid_loader:
                 xs = xs.to(device)
                 ys = ys.to(device)
 
-                pred = model(ys)
-                loss = criterion(pred, xs)
+                if args.model_class == "CDEIT":
+                    y_st = y_st.to(device)
+                    t = torch.randint(0, diffusion.num_timesteps, (xs.shape[0],), device=device)
+                    model_kwargs = dict(y=ys, y_st=y_st)
+                    loss_dict = diffusion.training_losses(model, xs, t, model_kwargs)
+                    loss = loss_dict["loss"]  # *args.global_batch_size
+                else:
+                    pred = model(ys)
+                    loss = criterion(pred, xs)
                 valid_loss += loss.item()
 
         avg_valid_loss = valid_loss / len(valid_loader)
@@ -128,9 +146,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train model on EIT data.")
-    parser.add_argument("--model-name", type=str, default="eitnet", help="Module name in models/ [eitnet sadb_net cnneim ecnet]")
-    parser.add_argument("--model-class", type=str, default="EITNet", help="Class name of model [EITNet SADB_Net CNN_EIM EcNet]")
-    parser.add_argument("--ckpt-name", type=str, default="EITNet", help="Checkpoint subdirectory name [EITNet SADB_Net CNN_EIM EcNet]")
+    parser.add_argument("--model-name", type=str, default="eitnet", help="Module name in models/ [eitnet sadb_net cnneim ecnet cdeit]")
+    parser.add_argument("--model-class", type=str, default="EITNet", help="Class name of model [EITNet SADB_Net CNN_EIM EcNet CDEIT]")
+    parser.add_argument("--ckpt-name", type=str, default="EITNet", help="Checkpoint subdirectory name [EITNet SADB_Net CNN_EIM EcNet CDEIT]")
     parser.add_argument("--train-path", type=str, default="/home/zhx/word/work/CDEIT/data/train/", help="Training data path")
     parser.add_argument("--valid-path", type=str, default="/home/zhx/word/work/CDEIT/data/valid/", help="Validation data path")
     parser.add_argument("--epochs", type=int, default=30, help="Number of training epochs")

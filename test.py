@@ -117,7 +117,7 @@ def main(args):
     with torch.no_grad():
         loop = tqdm(test_loader, desc="[Test]", ncols=100)
 
-        for ys, _, xs in loop:
+        for ys, y_st, xs in loop:
             ys = ys.to(device)
             xs = xs.to(device)
 

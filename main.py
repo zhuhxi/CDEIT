@@ -4,7 +4,7 @@ A minimal training script for DiT using PyTorch DDP.
 import os
 # os.environ['NCCL_P2P_DISABLE'] = "1"
 # os.environ['NCCL_IB_DISABLE'] = "1"
-# os.environ['CUDA_VISIBLE_DEVICES']='0'
+# os.environ['CUDA_VISIBLE_DEVICES']='1'
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -18,7 +18,7 @@ import argparse
 import logging
 import os
 
-from models import DiT
+from model import DiT
 from diffusion import create_diffusion
 
 from dataset import EITdataset
@@ -461,5 +461,6 @@ if __name__ == "__main__":
         main(args)
     if args.mode=='test':
         test(args)
-   
+
+
 

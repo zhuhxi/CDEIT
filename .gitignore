@@ -7,5 +7,6 @@ data/*
 *.npz
 *.mat
 *.txt
+*.pyc
 models/__pycache__/*
 __pycache__/*
