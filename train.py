@@ -61,10 +61,6 @@ def main(args):
     train_losses = []
     valid_losses = []
 
-    if args.model_class == 'CDEIT':
-        from diffusion import create_diffusion
-        diffusion = create_diffusion(timestep_respacing="") 
-
     for epoch in range(args.epochs):
         model.train()
         train_loss = 0.0
@@ -75,11 +71,7 @@ def main(args):
             ys = ys.to(device)
 
             if args.model_class == "CDEIT":
-                y_st = y_st.to(device)
-                t = torch.randint(0, diffusion.num_timesteps, (xs.shape[0],), device=device)
-                model_kwargs = dict(y=ys, y_st=y_st)
-                loss_dict = diffusion.training_losses(model, xs, t, model_kwargs)
-                loss = loss_dict["loss"]  # *args.global_batch_size
+                loss = model.get_loss(xs, ys)
             else:
                 pred = model(ys)
                 loss = criterion(pred, xs)
@@ -103,11 +95,7 @@ def main(args):
                 ys = ys.to(device)
 
                 if args.model_class == "CDEIT":
-                    y_st = y_st.to(device)
-                    t = torch.randint(0, diffusion.num_timesteps, (xs.shape[0],), device=device)
-                    model_kwargs = dict(y=ys, y_st=y_st)
-                    loss_dict = diffusion.training_losses(model, xs, t, model_kwargs)
-                    loss = loss_dict["loss"]  # *args.global_batch_size
+                    loss = model.get_loss(xs, ys)
                 else:
                     pred = model(ys)
                     loss = criterion(pred, xs)

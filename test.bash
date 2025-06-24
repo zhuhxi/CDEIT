@@ -16,4 +16,7 @@ python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/SRCNN --num_samp
 python test.py --model-name cunet --model-class CUnet --ckpt-name CUnet
 python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/CUnet --num_samples 5
 
+python test.py --model-name cdeit --model-class CDEIT --ckpt-name CDEIT
+python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/CDEIT --num_samples 5
+
 python main.py --mode test --data simulated --results-dir results_zhx

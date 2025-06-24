@@ -121,7 +121,10 @@ def main(args):
             ys = ys.to(device)
             xs = xs.to(device)
 
-            pred = model(ys)
+            if args.model_class == "CDEIT":
+                pred, _ = model(xs, ys)
+            else:
+                pred = model(ys)
             loss = nn.MSELoss()(pred, xs)
 
             test_loss += loss.item()
