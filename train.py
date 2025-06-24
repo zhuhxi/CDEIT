@@ -42,7 +42,7 @@ def main(args):
     ModelClass = getattr(model_module, args.model_class)
 
     # 初始化模型
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = ModelClass().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)

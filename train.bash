@@ -6,3 +6,4 @@ python train.py --model-name srcnn --model-class SRCNN --ckpt-name SRCNN --epoch
 python train.py --model-name cunet --model-class CUnet --ckpt-name CUnet --epochs 80
 python main.py --data-path ./data --results-dir result_zhx --mode train
 python train.py --model-name cdeit --model-class CDEIT --ckpt-name CDEIT --epochs 80
+python train.py --model-name cdeit_ecnet --model-class CDEIT --ckpt-name CDEIT --epochs 80
