@@ -121,7 +121,7 @@ def main(args):
             ys = ys.to(device)
             xs = xs.to(device)
 
-            if args.model_class == "CDEIT":
+            if "CDEIT" in args.model_class:
                 pred, _ = model(xs, ys)
             else:
                 pred = model(ys)

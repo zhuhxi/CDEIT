@@ -18,8 +18,8 @@ def save_comparison_images(preds, gts, ckpt_dir, num_samples=5):
         ax1, ax2 = axes[i]
 
         # 选择第 i 个样本
-        pred_img = preds[i]
-        gt_img = gts[i]
+        pred_img = preds[i + 3000]
+        gt_img = gts[i + 3000]
 
         # 画出预测图像
         ax1.imshow(pred_img.transpose(1, 2, 0))  # 假设数据格式是 CxHxW，转为 HxWxC

@@ -70,7 +70,7 @@ def main(args):
             xs = xs.to(device)
             ys = ys.to(device)
 
-            if args.model_class == "CDEIT":
+            if "CDEIT" in args.model_class:
                 loss = model.get_loss(xs, ys)
             else:
                 pred = model(ys)
@@ -94,7 +94,7 @@ def main(args):
                 xs = xs.to(device)
                 ys = ys.to(device)
 
-                if args.model_class == "CDEIT":
+                if "CDEIT" in args.model_class:
                     loss = model.get_loss(xs, ys)
                 else:
                     pred = model(ys)
