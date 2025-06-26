@@ -99,9 +99,9 @@ class EcNet(nn.Module):
     
 
 # Conditional Diffusion Model (CDEIT)
-class CDEIT(nn.Module):
+class CDEIT_ECNET(nn.Module):
     def __init__(self, unet_model=EcNet(), num_timesteps=1000):
-        super(CDEIT, self).__init__()
+        super(CDEIT_ECNET, self).__init__()
         self.unet = unet_model
         self.num_timesteps = num_timesteps
         self.beta_schedule = torch.linspace(1e-5, 0.02, num_timesteps)  # Linear beta schedule for simplicity
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     
     # Initialize the UNet model and the CDEIT model
     unet_model = EcNet()  # In_channels=2 (image + condition)
-    cdeit_model = CDEIT(unet_model=unet_model)
+    cdeit_model = CDEIT_ECNET(unet_model=unet_model)
     
     # Run a forward pass to get the denoised image
     denoised_image, noise = cdeit_model(x, cond)
