@@ -23,3 +23,6 @@ python test.py --model-name cdeit_ecnet --model-class CDEIT_ECNET --ckpt-name CD
 python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/CDEIT_ECNET --num_samples 5
 
 python main.py --mode test --data simulated --results-dir results_zhx
+
+python test.py --model-name vit --model-class Vit --ckpt-name Vit
+python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/Vit --num_samples 5
