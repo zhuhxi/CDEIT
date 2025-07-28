@@ -315,7 +315,7 @@ class DHUnet(nn.Module):
         x = self.decoder_block_3([x, fcu_3, fcd_3])  # -> (B, 64, 64, 64)
 
         x = self.upsample4(x)                    # -> (B, 64, 128, 128)
-        x = self.decoder_block_4([x, fcu_4, fcd_4])  # -> (B, 64, 128, 128)
+        # x = self.decoder_block_4([x, fcu_4, fcd_4])  # -> (B, 64, 128, 128)
 
         x = self.conv1x1_2(x)                    # -> (B, 1, 128, 128)
         return x
