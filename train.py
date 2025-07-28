@@ -111,26 +111,25 @@ def main(args):
             torch.save(model.state_dict(), os.path.join(ckpt_dir, "best_model.pt"))
             print(f"✅ Best model saved at epoch {epoch+1}")
 
-    # 保存损失记录
-    np.savez(os.path.join(ckpt_dir, "loss_history.npz"),
-             train_losses=train_losses,
-             valid_losses=valid_losses)
+        # 保存损失记录
+        np.savez(os.path.join(ckpt_dir, "loss_history.npz"),
+                train_losses=train_losses,
+                valid_losses=valid_losses)
 
-    # 绘制曲线
-    plt.figure(figsize=(8, 6))
-    plt.plot(train_losses, label="Train Loss")
-    plt.plot(valid_losses, label="Valid Loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("Training & Validation Loss")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig(os.path.join(ckpt_dir, "loss_curve.png"))
-    plt.close()
+        # 绘制曲线
+        plt.figure(figsize=(8, 6))
+        plt.plot(train_losses, label="Train Loss")
+        plt.plot(valid_losses, label="Valid Loss")
+        plt.xlabel("Epoch")
+        plt.ylabel("Loss")
+        plt.title("Training & Validation Loss")
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.savefig(os.path.join(ckpt_dir, "loss_curve.png"))
+        plt.close()
 
     print(f"📁 所有文件已保存到 {ckpt_dir}")
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train model on EIT data.")
