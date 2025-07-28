@@ -162,7 +162,7 @@ class DHUnet(nn.Module):
     def __init__(self):
         channel = 64
         super().__init__()
-        self.feature = nn.Conv2d(1, channel, 3, 1, 1)
+        self.feature = nn.Conv2d(1, channel, 1)
         self.dcse_block_1 = nn.Sequential(
             DeformableConvBlock(channel, channel),
             SEBlock(channel, 4),
