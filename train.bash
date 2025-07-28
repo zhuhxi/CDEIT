@@ -12,4 +12,19 @@ python train.py --model-name vit --model-class Vit --ckpt-name Vit --epochs 80
 python train.py --model-name vivim --model-class Vivim --ckpt-name Vivim --epochs 80
 
 
-python train.py --model-name vim --model-class Vim --ckpt-name Vivim --epochs 80
+python train.py --model-name vim --model-class Vim --ckpt-name Vim --epochs 80
+python train.py --model-name yolo5 --model-class Yolo5 --ckpt-name Yolo5 --epochs 80
+
+python train.py --model-name vit1 --model-class Vit1 --ckpt-name Vit1 --epochs 80
+
+python train.py --model-name diffusion --model-class Diffusion --ckpt-name Diffusion --epochs 80
+python train.py --model-name diffusion --model-class Diffusion --ckpt-name Diffusion_3cnn --epochs 80
+
+
+python train.py --model-name DeepUNet_PS8x_16to128 --model-class DeepUNet_PS8x_16to128 --ckpt-name DeepUNet_PS8x_16to128 --epochs 80
+python train.py --model-name erspn --model-class ERSPN --ckpt-name ERSPN --epochs 80
+
+python train.py --model-name dff_net --model-class DFF_Net --ckpt-name DFF_Net --epochs 80
+python train.py --model-name hasrn --model-class HASRN --ckpt-name HASRN --epochs 80
+
+python train.py --model-name dhunet --model-class DHUnet --ckpt-name DHUnet --epochs 80

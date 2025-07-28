@@ -26,3 +26,11 @@ python main.py --mode test --data simulated --results-dir results_zhx
 
 python test.py --model-name vit --model-class Vit --ckpt-name Vit
 python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/Vit --num_samples 5
+
+
+python test.py --model-name vim --model-class Vim --ckpt-name Vim
+python plot.py --ckpt_dir /home/zhx/word/work/CDEIT/checkpoints/Vim --num_samples 5
+
+python test.py --model-name erspn --model-class ERSPN --ckpt-name ERSPN
+python test.py --model-name dhunet --model-class DHUnet --ckpt-name DHUnet
+python test.py --model-name dhunet --model-class DHUnet --ckpt-name DHUnet
