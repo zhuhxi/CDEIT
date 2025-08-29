@@ -51,8 +51,8 @@ def main(args):
     # 加载数据
     train_dataset = EITdataset(args.train_path, modelname='DEIT')
     valid_dataset = EITdataset(args.valid_path, modelname='DEIT')
-    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
-    valid_loader = DataLoader(valid_dataset, batch_size=8, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
+    valid_loader = DataLoader(valid_dataset, batch_size=4, shuffle=False)
 
     # 保存目录
     ckpt_dir = os.path.join("checkpoints", args.ckpt_name)

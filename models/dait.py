@@ -311,34 +311,6 @@ class Upsample(nn.Module):
     def forward(self, x):
         return self.body(x)
 
-class MLPUpSample(nn.Module):
-    def __init__(self, input_channels, output_channels, input_size, output_size):
-        super(MLPUpSample, self).__init__()
-        self.input_size = input_size
-        self.output_size = output_size
-        
-        # 输入展平后的维度
-        self.input_dim = input_channels * input_size * input_size
-        self.output_dim = output_channels * output_size * output_size
-        
-        # 定义 MLP 模块
-        self.mlp = nn.Sequential(
-            nn.Linear(self.input_dim, self.output_dim)  # 输出层
-        )
-
-    def forward(self, x):
-        B, C, H, W = x.shape
-        # 将图像展平为一维向量
-        x = x.view(B, -1)  # 展平为 (B, C * H * W)
-        
-        # 通过 MLP 进行特征转换
-        x = self.mlp(x)  # 输出 (B, output_channels * output_size * output_size)
-        
-        # 将输出重塑为目标大小
-        x = x.view(B, -1, self.output_size, self.output_size)  # 还原为 (B, output_channels, output_size, output_size)
-        
-        return x
-
 ##########################################################################
 ##---------- DAIT -----------------------
 class DAIT(nn.Module):
@@ -400,13 +372,25 @@ class DAIT(nn.Module):
                              bias=bias, LayerNorm_type=LayerNorm_type) for i in range(num_refinement_blocks)])
 
         self.output = nn.Conv2d(int(dim * 2 ** 1), out_channels, kernel_size=3, stride=1, padding=1, bias=bias)
-        self.mlp_upsample = MLPUpSample(input_channels=1, output_channels=3, input_size=16, output_size=128)
         self.conv_1x1 = nn.Conv2d(in_channels=3, out_channels=1, kernel_size=1)
+        # 多阶段上采样
+        self.upscale = nn.Sequential(
+            nn.Conv2d(64, 256, 3, padding=1),
+            nn.PixelShuffle(2),  # 32x32
+            nn.ReLU(inplace=True),
+            nn.Conv2d(64, 256, 3, padding=1),
+            nn.PixelShuffle(2),  # 64x64
+            nn.ReLU(inplace=True),
+            nn.Conv2d(64, 256, 3, padding=1),
+            nn.PixelShuffle(2),  # 128x128
+            nn.ReLU(inplace=True)
+        )
 
     def forward(self, inp_img):
 
         # inp_img shape (B, 1, 16, 16) -> (B, 3, 128, 128)
-        inp_img = self.mlp_upsample(inp_img)
+        inp_img = self.upscale(inp_img)
+
 
         inp_enc_level1 = self.patch_embed(inp_img)
         out_enc_level1 = self.encoder_level1(inp_enc_level1)

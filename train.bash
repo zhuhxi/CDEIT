@@ -28,3 +28,6 @@ python train.py --model-name dff_net --model-class DFF_Net --ckpt-name DFF_Net -
 python train.py --model-name hasrn --model-class HASRN --ckpt-name HASRN --epochs 80
 
 python train.py --model-name dhunet --model-class DHUnet --ckpt-name DHUnet --epochs 80
+
+python train.py --model-name dait --model-class DAIT --ckpt-name DAIT --epochs 80
+
